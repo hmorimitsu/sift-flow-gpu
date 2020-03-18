@@ -1,5 +1,4 @@
 import numpy as np
-import time
 import torch
 import torch.nn.functional as F
 
@@ -56,7 +55,7 @@ class SiftFlowTorch(object):
             slightly faster but less accurate.
         return_numpy : boolean, optional
             If True, transfers the descriptor from pytorch to numpy before
-            returning. This will increase the running time dur to the memory
+            returning. This will increase the running time due to the memory
             transfer.
 
     References:
@@ -130,7 +129,6 @@ class SiftFlowTorch(object):
                 ``Wo = floor((Wi - D) / step_size)``
                 ``D = 0 if is_boundary_included else 4*cell_size``
         """
-        start_time = time.time()
         images = np.stack(images, axis=0).transpose(0, 3, 1, 2)
         images = torch.from_numpy(images)
         if self.fp16:
@@ -265,9 +263,6 @@ class SiftFlowTorch(object):
 
         if self.return_numpy:
             descs = descs.detach().cpu().numpy()
-
-        end_time = time.time()
-        print('total time: {:.1f} ms'.format(1000.0 * (end_time - start_time)))
 
         return descs
 
